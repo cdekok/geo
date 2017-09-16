@@ -11,11 +11,11 @@ use Cdekok\Geo\Geohash;
 $hash = (new Geohash)->encode($lat, $lon);
 
 // Decode
-$location = (new Geohash)->deode($hash);
+$location = (new Geohash)->decode($hash);
 echo $location['latitude'] . "\n";
 echo $location['longitude'] . "\n";
 
-// Decode bounding box
+// Decode bounding boxc
 $bb = (new Geohash)->deodeBbox($hash);
 echo 'Min latitude: ' . $bb[0] . "\n";
 echo 'Min longitude: ' . $bb[1] . "\n";
