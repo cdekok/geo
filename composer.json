@@ -1,6 +1,11 @@
 {
     "name": "cdekok/geo",
     "description": "Geohash library port of ngeohash",
+    "keywords": [
+        "geohash",
+        "geo",
+        "ngeohash"
+    ],
     "type": "library",
     "license": "MIT",
     "authors": [
