@@ -1,6 +1,6 @@
 # Geohash
 
-PHP implementation for encoding / decoding geohashes
+PHP implementation for encoding / decoding geohashes [![Build Status](https://travis-ci.org/cdekok/geo.svg?branch=develop)](https://travis-ci.org/cdekok/geo)
 
 ## Usage
 
