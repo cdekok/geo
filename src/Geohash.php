@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare (strict_types = 1);
 
 namespace Cdekok\Geo;
 
@@ -43,6 +43,15 @@ class Geohash
         'z' => 31,
     ];
 
+    const DIRECTION_NORTH = [1,0];
+    const DIRECTION_NORTHEAST = [1,1];
+    const DIRECTION_EAST = [0,1];
+    const DIRECTION_SOUTHEAST = [-1, 1];
+    const DIRECTION_SOUTH = [-1, 0];
+    const DIRECTION_SOUTHWEST = [-1,-1];
+    const DIRECTION_WEST = [0,-1];
+    const DIRECTION_NORTHWEST = [1,-1];
+
     /**
      * Encode lat / long to geohash
      *
@@ -51,7 +60,7 @@ class Geohash
      * @param int $numberOfChars
      * @return string
      */
-    public function encode(float $latitude, float $longitude, int $numberOfChars = 9):string
+    public function encode(float $latitude, float $longitude, int $numberOfChars = 9) : string
     {
         $chars = [];
         $bits = 0;
@@ -109,7 +118,7 @@ class Geohash
      * @param string $hashString
      * @return array
      */
-    public function decode(string $hashString):array
+    public function decode(string $hashString) : array
     {
         $bbox = $this->decodeBbox($hashString);
         $lat = ($bbox[0] + $bbox[2]) / 2;
@@ -134,7 +143,7 @@ class Geohash
      * @param string $hashString
      * @return array [$minLat, $minLon, $maxLat, $maxLon]
      */
-    public function decodeBbox(string $hashString):array
+    public function decodeBbox(string $hashString) : array
     {
         $isLon = true;
         $maxLat = 90;
@@ -169,5 +178,62 @@ class Geohash
             }
         }
         return [$minLat, $minLon, $maxLat, $maxLon];
+    }
+
+    /**
+     * Retrieve all geohashes from a bounding box
+     *
+     * @param float $minLat
+     * @param float $minLon
+     * @param float $maxLat
+     * @param float $maxLon
+     * @param int $numberOfChars
+     * @return array
+     */
+    public function bboxes(float $minLat, float $minLon, float $maxLat, float $maxLon, int $numberOfChars = 9) : array
+    {
+        $hashSouthWest = $this->encode($minLat, $minLon, $numberOfChars);
+        $hashNorthEast = $this->encode($maxLat, $maxLon, $numberOfChars);
+
+        $latLon = $this->decode($hashSouthWest);
+
+        $perLat = $latLon['error']['latitude'] * 2;
+        $perLon = $latLon['error']['longitude'] * 2;
+
+        $boxSouthWest = $this->decodeBbox($hashSouthWest);
+        $boxNorthEast = $this->decodeBbox($hashNorthEast);
+
+        $latStep = round(($boxNorthEast[0] - $boxSouthWest[0]) / $perLat);
+        $lonStep = round(($boxNorthEast[1] - $boxSouthWest[1]) / $perLon);
+
+        $hashList = [];
+
+        for ($lat = 0; $lat <= $latStep; $lat++) {
+            for ($lon = 0; $lon <= $lonStep; $lon++) {
+                $hashList[] = $this->neighbour($hashSouthWest, [$lat, $lon]);
+            }
+        }
+
+        return $hashList;
+    }
+
+    /**
+     * Find neighbor of a geohash string in certain direction.
+     * Direction is a two-element array $direction [lat, lon], i.e.
+     *
+     * <code>
+     * (new Geohash)->neighbour($hash, Geohash::DIRECTION_NORTH);
+     * </code>
+     *
+     * @param string $hashString
+     * @param array $direction
+     * @return string
+     */
+    public function neighbour(string $hashString, array $direction):string
+    {
+        $lonLat = $this->decode($hashString);
+        $neighborLat = $lonLat['latitude'] + $direction[0] * $lonLat['error']['latitude'] * 2;
+        $neighborLon = $lonLat['longitude'] + $direction[1] * $lonLat['error']['longitude'] * 2;
+        return $this->encode($neighborLat, $neighborLon, strlen($hashString));
     }
 }
