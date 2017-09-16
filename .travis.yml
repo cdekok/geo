@@ -11,7 +11,7 @@ matrix:
     - php: hhvm
 
 install:
-  - composer install -o
+  - composer install -o --ignore-platform-reqs
 
 script:
   - composer test
