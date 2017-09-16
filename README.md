@@ -3,6 +3,7 @@
 PHP implementation for encoding / decoding geohashes
 
 [![Build Status](https://travis-ci.org/cdekok/geo.svg?branch=develop)](https://travis-ci.org/cdekok/geo)
+[![Coverage Status](https://coveralls.io/repos/github/cdekok/geo/badge.svg?branch=develop)](https://coveralls.io/github/cdekok/geo?branch=develop)
 
 ## Usage
 
