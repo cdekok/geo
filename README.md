@@ -15,7 +15,7 @@ $location = (new Geohash)->decode($hash);
 echo $location['latitude'] . "\n";
 echo $location['longitude'] . "\n";
 
-// Decode bounding boxc
+// Decode bounding box
 $bb = (new Geohash)->deodeBbox($hash);
 echo 'Min latitude: ' . $bb[0] . "\n";
 echo 'Min longitude: ' . $bb[1] . "\n";
