@@ -35,7 +35,7 @@ $maxLat = 90;
 $maxLon = 180;
 $length = 1;
 $hashes = (new Geohash)->bboxes($minLat, $minLon, $maxLat, $maxLon, $length);
-prin_r($hashes);
+print_r($hashes);
 [
     '0',
     '1',
