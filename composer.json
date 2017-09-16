@@ -21,7 +21,8 @@
     "require-dev": {
         "phpunit/phpunit": "^6.3",
         "phpro/grumphp": "^0.12.0",
-        "phpstan/phpstan": "^0.8.5"
+        "phpstan/phpstan": "^0.8.5",
+        "php-coveralls/php-coveralls": "^1.0"
     },
     "autoload": {
         "exclude-from-classmap": ["/test/"],
@@ -39,6 +40,7 @@
         "report": "phpunit --log-junit 'report/phpunit/unitreport.xml' --coverage-html='report/phpunit/coverage' --coverage-clover='report/phpunit/coverage.xml' --coverage-text && phpcs --standard=PSR2 -n --report=checkstyle --report-file=report/checkstyle.xml src\/",
         "coverage-server": "cd report/phpunit/coverage && php -S localhost:5555",
         "test": "grumphp run --ansi",
-        "unit": "phpunit --colors=always"
+        "unit": "phpunit --colors=always",
+        "coverage": "phpunit --coverage-text"
     }
 }

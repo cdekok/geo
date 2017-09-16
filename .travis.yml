@@ -16,3 +16,8 @@ install:
 
 script:
   - composer test
+
+after_success:
+  - mkdir -p build/logs
+  - ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+  - ./vendor/bin/coveralls --coverage_clover=build/logs/clover.xml
